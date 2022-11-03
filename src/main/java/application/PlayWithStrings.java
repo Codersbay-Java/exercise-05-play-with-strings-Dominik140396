@@ -1,20 +1,30 @@
 package application;
 
+import java.util.Arrays;
+
 public class PlayWithStrings {
 	public static void main(String[] args) {
 		System.out.println("Hello String World");
+		printIntitials("Dominik", "Paschinger");
+		System.out.println(areAnagrams("partial men", "p.arliament"));
+		System.out.println(areAnagrams("a j u", "oihjpj"));
+		System.out.println(isPalindrome("kayak"));
+
+
+
 	}
 
 	/**
 	 * TODO: print initials
-	 * 
+	 * Jeder String kann ein CharackterArray werden !!!!  Tipp von Lukas
 	 * This method should print out the initials of a name to standard out.
 	 * 
 	 * @param firstname
 	 * @param lastname
 	 */
 	public static void printIntitials(String firstname, String lastname) {
-
+		String initials = firstname.substring(0,1) + " " + lastname.substring(0,1);
+		System.out.println(initials);
 	}
 
 	/**
@@ -31,7 +41,19 @@ public class PlayWithStrings {
 	 * @return true if the values are anagrams, false otherwise.
 	 */
 	public static boolean areAnagrams(String value1, String value2) {
-		return false;
+		value1 = value1.replaceAll("\\s", "").replaceAll("\\.", "");
+		value2 = value2.replaceAll("\\s", "").replaceAll("\\.", "");
+
+		if (value1.length() != value2.length())
+			return false;
+
+		char[] array1 = value1.toLowerCase().toCharArray();
+		char[] array2 = value2.toLowerCase().toCharArray();
+
+		Arrays.sort(array1);
+		Arrays.sort(array2);
+
+		return Arrays.equals(array1, array2);
 	}
 
 	/**
@@ -49,6 +71,21 @@ public class PlayWithStrings {
 	 * @return true if it is a palindrome, false otherwise.
 	 */
 	public static boolean isPalindrome(String value) {
-		return false;
+		for (int i = 0, j = value.length() - 1; i < j; i++, j--) {
+			char startChar = value.charAt(i);
+			char endChar = value.charAt(j);
+
+			if (Character.isLowSurrogate(endChar)) {
+				if (startChar != value.charAt(--j)) {
+					return false;
+				}
+				if (value.charAt(++i) != endChar) {
+					return false;
+				}
+			} else if (startChar != endChar) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
